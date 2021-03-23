@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>Snake Game</title>
+    </head>
+    <body>
+        <canvas height="1000" width="1000" style="border:2px solid#000000" id="ctx"/>
+        <script>
+            var ctx = document.getElementById('ctx').getContext('2d');
+            ctx.font = "20px Calibri";
+
+            var canvasDimensions = {
+                width:1000,
+                height:1000
+            };
+
+            var snakeBody = {
+                width:20,
+                height:20
+            };
+
+            var food = {
+                width:20,
+                height:20
+            };
+
+            function startGame(){
+                snakeList = [
+                    {x:220, y:200},
+                    {x:210, y:200},
+                    {x:200, y:200}
+                ];
+
+                foodList = [];
+            }
+
+            var snakeList, foodList;
+            
+            
+
+       
+
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,6 @@
+Score above 15 create another ball. 
+Double the life
+
+Clean up the code. 
+Classes and have references. Not just one main. 
+Pain in the ass to read!!!!

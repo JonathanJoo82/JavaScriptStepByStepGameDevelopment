@@ -1,0 +1,10 @@
+Adding borders to the game. 
+    When the snake crashes into the border it should be game over
+
+Adding obstacles to the game every 10 points. 
+
+Adding timer to see how long the user will last. 
+
+Clean up the code. 
+Classes and have references. Not just one main. 
+Pain in the ass to read!!!!

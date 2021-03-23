@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <title>Breakout Game</title>
+    </head>
+    <body>
+        <canvas height="500" width="500" style="border:2px solid#000000" id="ctx"/>
+        <!--<canvas height="500" width="500" style="border:2px solid#000000" id="ctx"></canvas>-->
+
+        <script>
+            //now to access the canvas. Need reference the id. 
+            var ctx = document.getElementById('ctx').getContext('2d');
+            ctx.font = '20px Calibri';
+            
+            var canvasDimensions = {
+                width:500,
+                height:500
+            };
+
+            var ball = {
+                x:0,
+                y:0,
+                radius:5,
+                color:'red',
+            }
+
+            var base = {
+                x:0,
+                y:400,
+                color:'blue',
+                height:20,
+                width:100
+            };
+
+            function drawBall(){
+                ctx.save();
+                ctx.fillStyle = ball.color;
+                
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ball.radius,0,2*Math.PI);
+                ctx.fill();
+
+                ctx.restore();
+            }
+            
+            function drawBase(){
+                ctx.save();
+                ctx.fillStyle = base.color;
+                ctx.fillRect(base.x, base.y, base.width, base.height);
+                ctx.restore();
+            }
+
+            function startGame(){
+                //can set x and y to random
+                base.x = 150;
+                ball.x = base.x + 100;
+                ball.y = base.y - 100;
+                drawBall();
+                drawBase();
+            }
+            startGame();
+            
+        </script>
+    </body>
+</html>

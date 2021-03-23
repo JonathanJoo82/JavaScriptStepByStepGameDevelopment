@@ -1,0 +1,5 @@
+The following games are built to understand the concepts of canvas and
+Javascript game development. 
+
+Proper Object Oriented Programming is not followed. 
+Will be applied when better understanding of Javascript is acheieved. 

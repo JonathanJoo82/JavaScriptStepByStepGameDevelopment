@@ -1,0 +1,195 @@
+<html>
+    <head>
+        <title>Breakout Game</title>
+    </head>
+    <body>
+        <canvas height="500" width="500" style="border:2px solid#000000" id="ctx"/>
+        <!--<canvas height="500" width="500" style="border:2px solid#000000" id="ctx"></canvas>-->
+
+        <script type="text/javascript">
+            //now to access the canvas. Need reference the id. 
+            var ctx = document.getElementById('ctx').getContext('2d');
+            ctx.font = '20px Calibri';
+            var numberOfTiles;
+            var tileList;
+            var score;
+            var interval;
+            
+            var canvasDimensions = {
+                width:500,
+                height:500
+            };
+
+            var ball = {
+                x:0,
+                y:0,
+                radius:5,
+                color:'red',
+                speedX:-5,
+                speedY:-5
+            };
+
+            var base = {
+                x:0,
+                y:400,
+                color:'blue',
+                height:20,
+                width:100,
+                pressingLeft:false,
+                pressingRight:false,
+                lives:5
+            };
+
+            var tile = {
+                height:20,
+                width:40,
+                color:'green'
+            };
+
+            document.onkeydown = function(event){
+                if(event.keyCode == 37){
+                    base.pressingLeft = true;
+                    base.pressingRight= false;
+                } else if (event.keyCode == 39){
+                    base.pressingLeft = false;
+                    base.pressingRight= true;
+                }
+            }
+
+            document.onkeyup = function(event){
+                if(event.keyCode == 37){
+                    base.pressingLeft = false;
+                } else if (event.keyCode == 39){
+                    base.pressingRight= false;
+                }
+            }
+
+            function drawBall(){
+                ctx.save();
+                ctx.fillStyle = ball.color;
+                
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ball.radius,0,2*Math.PI);
+                ctx.fill();
+
+                ctx.restore();
+            }
+            
+            function drawBase(){
+                ctx.save();
+                ctx.fillStyle = base.color;
+                ctx.fillRect(base.x, base.y, base.width, base.height);
+                ctx.restore();
+            }
+
+            function drawTile(tileObject, index){
+                ctx.save();
+                ctx.fillStyle = tile.color;
+                ctx.fillRect(tileObject.x, tileObject.y, tile.width, tile.height);
+                ctx.restore();
+            }
+
+            function updateBarPosition(){
+                if(base.pressingLeft){
+                    base.x = base.x - 7;
+                } else if(base.pressingRight){
+                    base.x =base.x + 7;
+                }
+
+                //boundry conditions
+                if(base.x < 0){
+                    base.x = 0;
+                } else if (base.x > canvasDimensions.width-base.width){
+                    base.x = canvasDimensions.width-base.width;
+                }
+            }
+
+            function updateBallPosition(){
+                ball.x += ball.speedX;
+                ball.y += ball.speedY;
+
+                if(ball.x > canvasDimensions.width || ball.x < 0){
+                    ball.speedX = -ball.speedX;
+                } 
+                if(ball.y < 0){
+                    ball.speedY = -ball.speedY;
+                }
+                if(ball.y > canvasDimensions.height){
+                    base.lives--;
+                    ball.speedY = -ball.speedY;
+                }
+            }
+
+            function testCollision(base, ball){
+                return ((base.x < ball.x + 2*ball.radius) &&
+                (ball.x < base.x + base.width) &&
+                (base.y < ball.y + 2*ball.radius) &&
+                (ball.y < base.y + base.height));
+            }
+
+            function testCollisionTile(tileElement,ball){
+                return ((tileElement.x < ball.x + 2*ball.radius) &&
+                (ball.x < tileElement.x + tile.width) &&
+                (tileElement.y < ball.y + 2*ball.radius) &&
+                (ball.y < tileElement.y + tile.height));
+            }
+            
+
+            function updateGame(){
+                ctx.clearRect(0,0,canvasDimensions.width, canvasDimensions.height);
+                tileList.forEach(drawTile);
+                drawBall();
+                drawBase();
+                if(testCollision(base,ball)){
+                    ball.speedY = -ball.speedY;
+                }
+
+                for(key in tileList){
+                    if(testCollisionTile(tileList[key],ball)){
+                        delete tileList[key];
+                        ball.speedY = -ball.speedY;
+                        score++;
+                    }
+                }
+                ctx.fillText("Score" + score, 5, 490);
+                ctx.fillText("Lives "+ base.lives, 430, 490);
+                isGameOver();
+                updateBarPosition();
+                updateBallPosition();
+            }
+
+            function isGameOver(){
+                if(base.lives == 0){
+                    clearInterval(interval);
+                }
+            }
+
+
+            function startGame(){
+                //can set x and y to random
+                base.x = 150;
+                ball.x = base.x + 100;
+                ball.y = base.y - 100;
+                numberOfTiles = 0;
+                var tileX = 5;
+                var tileY = 5;
+                tileList = [];
+                score = 0;
+                base.lives = 5;
+                for(var i=1; i<=6; i++){
+                    tileX = 5;
+                    for(var j=1; j<=11; j++){
+                        tileList[numberOfTiles] = {x:tileX, y:tileY};
+                        numberOfTiles++;
+                        tileX += 45;
+                    }
+                    tileY += 25;
+                }
+                
+                interval = setInterval(updateGame, 10);
+            }
+            startGame();
+            
+        </script>
+    </body>
+</html>
